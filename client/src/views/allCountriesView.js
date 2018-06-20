@@ -9,4 +9,9 @@ allCountriesView.prototype.addCountry = function (country) {
     select.appendChild(option);
 };
 
+allCountriesView.prototype.makebuttonVisible = function (button) {
+  button.hidden = false;
+
+};
+
 module.exports = allCountriesView

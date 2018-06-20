@@ -73,6 +73,9 @@ const AllCountriesView = __webpack_require__(2)
 const countryRequest = new Request('https://restcountries.eu/rest/v2/all');
 const allCountriesView = new AllCountriesView();
 const appStart = function(){
+
+
+
   countryRequest.get(getAllCountriesComplete);
 
 
@@ -87,7 +90,10 @@ const appStart = function(){
 const getAllCountriesComplete = function(allCountries){
   allCountries.forEach(function(country){
     allCountriesView.addCountry(country);
+
   });
+  const addCountryButton = document.querySelector("#add-country-button")
+ allCountriesView.makebuttonVisible(addCountryButton);
 }
 
 
@@ -129,6 +135,11 @@ allCountriesView.prototype.addCountry = function (country) {
     const option = document.createElement("option");
     option.textContent = country.name
     select.appendChild(option);
+};
+
+allCountriesView.prototype.makebuttonVisible = function (button) {
+  button.hidden = false;
+
 };
 
 module.exports = allCountriesView
