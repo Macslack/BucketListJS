@@ -8,3 +8,5 @@ allCountriesView.prototype.addCountry = function (country) {
     option.textContent = country.name
     select.appendChild(option);
 };
+
+module.exports = allCountriesView
