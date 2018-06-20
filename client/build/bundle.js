@@ -65,8 +65,54 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Request = __webpack_require__(1);
+
+const countryRequest = new Request('https://restcountries.eu/rest/v2/all');
+
+const appStart = function(){
+  countryRequest.get(getAllCountriesComplete);
+
+
+
+
+
+
+
+
+}
+
+const getAllCountriesComplete = function(allCountries){
+  allCountries.forEach(function(country){
+    allCountriesView.addCountry(country);
+  });
+}
+
+
+window.addEventListener('load', appStart);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports) {
 
+const Request = function(url) {
+  this.url = url;
+}
+
+Request.prototype.get = function (next) {
+  const request = new XMLHttpRequest();
+  request.open("GET", this.url);
+  request.addEventListener("load", function(){
+    if(this.status !== 200) return;
+    const responseBody = JSON.parse(this.response);
+    next(responseBody);
+  })
+  request.send()
+};
+
+module.exports = Request;
 
 
 /***/ })
