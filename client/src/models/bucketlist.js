@@ -9,4 +9,4 @@ BucketList.prototype.add = function (selectedCountry) {
 
 
 
-model.exports = BucketList;
+module.exports = BucketList;

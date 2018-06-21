@@ -68,10 +68,12 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 const Request = __webpack_require__(1);
+const BucketList = __webpack_require__(3)
 const AllCountriesView = __webpack_require__(2)
 
 const countryRequest = new Request('https://restcountries.eu/rest/v2/all');
 const allCountriesView = new AllCountriesView();
+const bucketList = new BucketList();
 const appStart = function(){
 
 
@@ -98,6 +100,8 @@ const getAllCountriesComplete = function(allCountries){
 }
 
 const handleAddCountry = function() {
+  const selectedCountry = document.querySelector("option");
+  bucketList.add(selectedCountry)
   
 }
 
@@ -156,6 +160,24 @@ allCountriesView.prototype.makebuttonVisible = function (button) {
 };
 
 module.exports = allCountriesView
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+const BucketList = function(){
+  this.bucketlist = [];
+}
+
+BucketList.prototype.add = function (selectedCountry) {
+  this.bucketlist.push(selectedCountry);
+};
+
+
+
+
+module.exports = BucketList;
 
 
 /***/ })
