@@ -6,7 +6,7 @@ BucketCountriesView.prototype.showSelectedCountry = function (SelectedCountry) {
     const bucketList = document.querySelector("#selected-countries");
     const li = document.createElement("li");
     li.textContent = SelectedCountry.name
-    li.appendChild(bucketList);
+    bucketList.appendChild(li);
 };
 
 BucketCountriesView.prototype.makebuttonVisible = function (button) {
