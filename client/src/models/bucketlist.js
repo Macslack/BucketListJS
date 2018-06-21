@@ -4,9 +4,16 @@ const BucketList = function(){
 
 BucketList.prototype.add = function (selectedCountry) {
   this.bucketlist.push(selectedCountry);
-  
+
 };
 
+BucketList.prototype.remove = function (selectedCountry) {
+  this.bucketlist.forEach(function(country, index){
+    if(country === selectedCountry){
+      this.bucketList.splice(index, 1)
+    }
+  })
+};
 
 
 

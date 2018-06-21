@@ -26,4 +26,16 @@ Request.prototype.post = function (result, next) {
     request.send(JSON.stringify(result))
 };
 
+Request.prototype.delete = function(next) {
+  const request = new XMLHttpRequest();
+  request.open("DELETE", this.url);
+  request.addEventListener("load", function() {
+    if (this.status !== 204) return;
+    next();
+  });
+  request.send();
+};
+
+
+
 module.exports = Request;

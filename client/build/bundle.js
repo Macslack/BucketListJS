@@ -83,15 +83,16 @@ const bucketList = new BucketList();
 const appStart = function(){
 
   countryRequest.get(getAllCountriesComplete);
+
   bucketListRequest.get(getAllBucketListCountries);
+
   drawMap();
-  
+
 
 }
 
 const drawMap = function(){
   const mapDiv = document.getElementById('main-map')
-  console.log(mapDiv);
   const zoomLevel = 15;
     const glasgow = [55.86515, -4.25763];
   const mainMap = new MapWrapper(mapDiv, glasgow, zoomLevel);
@@ -109,33 +110,50 @@ const getAllCountriesComplete = function(allCountries){
   addCountryButton.addEventListener("click", handleAddCountry);
 }
 
-const deleteCountryButton = document.querySelector("#delete-country-button")
-  allCountriesView.makebuttonVisible(deleteCountryButton);
-  deleteCountryButton.addEventListener("click", handleAddCountry)
+
 
 
 const createRequestComplete = function(country){
-  console.log(country);
   bucketCountriesView.showSelectedCountry(country);
+  const deleteCountryButton = document.querySelector("#delete-country-button")
+    allCountriesView.makebuttonVisible(deleteCountryButton);
+    deleteCountryButton.addEventListener("click", handleRemoveCountry)
 }
 
 const handleAddCountry = function() {
   const option = document.querySelector("#countries-list")
   const newCountryName = option.value;
-  console.log(newCountryName);
+
   const countryToAdd = new Country(newCountryName)
   bucketList.add(countryToAdd)
   bucketListRequest.post(countryToAdd, createRequestComplete);
-  console.log(bucketList);
 
+}
+
+const handleRemoveCountry = function() {
+  const option = document.querySelector("#countries-list")
+  const removeCountryName = option.value;
+  // const countryToRemove = new Country(removeCountryName)
+  bucketListRequest.delete(deleteRequestComplete)
+  // bucketList.remove(removeCountryName)
+
+}
+const deleteRequestComplete = function() {
+  bucketCountriesView.clear();
 }
 
 
 const getAllBucketListCountries = function(bucketList) {
-  console.log(bucketList);
+
   bucketList.forEach(function(country) {
     bucketCountriesView.showSelectedCountry(country);
   })
+
+  if(bucketList.length > 0){
+  const deleteCountryButton = document.querySelector("#delete-country-button")
+    allCountriesView.makebuttonVisible(deleteCountryButton);
+    deleteCountryButton.addEventListener("click", handleRemoveCountry)
+  }
 }
 
 
@@ -182,6 +200,18 @@ Request.prototype.post = function (result, next) {
     request.send(JSON.stringify(result))
 };
 
+Request.prototype.delete = function(next) {
+  const request = new XMLHttpRequest();
+  request.open("DELETE", this.url);
+  request.addEventListener("load", function() {
+    if (this.status !== 204) return;
+    next();
+  });
+  request.send();
+};
+
+
+
 module.exports = Request;
 
 
@@ -219,9 +249,16 @@ const BucketList = function(){
 
 BucketList.prototype.add = function (selectedCountry) {
   this.bucketlist.push(selectedCountry);
-  
+
 };
 
+BucketList.prototype.remove = function (selectedCountry) {
+  this.bucketlist.forEach(function(country, index){
+    if(country === selectedCountry){
+      this.bucketList.splice(index, 1)
+    }
+  })
+};
 
 
 
@@ -257,6 +294,11 @@ BucketCountriesView.prototype.showSelectedCountry = function (SelectedCountry) {
 BucketCountriesView.prototype.makebuttonVisible = function (button) {
   button.hidden = false;
 
+};
+
+BucketCountriesView.prototype.clear = function () {
+  const bucketList = document.querySelector("#selected-countries");
+  bucketList.innerHTML = ""
 };
 
 

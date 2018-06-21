@@ -14,6 +14,11 @@ BucketCountriesView.prototype.makebuttonVisible = function (button) {
 
 };
 
+BucketCountriesView.prototype.clear = function () {
+  const bucketList = document.querySelector("#selected-countries");
+  bucketList.innerHTML = ""
+};
+
 
 
 
