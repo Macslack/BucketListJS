@@ -6,7 +6,7 @@ allCountriesView.prototype.addCountry = function (country) {
     const select = document.querySelector("#countries-list");
     const option = document.createElement("option");
     option.textContent = country.name;
-    option.value = country.name;
+    option.value = country.latlng;
     select.appendChild(option);
 };
 

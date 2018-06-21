@@ -3,6 +3,7 @@ const MapWrapper = function(element, coords, zoom){
   this.map = L.map(element).addLayer(osmLayer).setView(coords, zoom);
   this.map.on('click', function(event){
     this.addMarker(event.latlng);
+    console.log(event.latlng);
 
   }.bind(this))
 

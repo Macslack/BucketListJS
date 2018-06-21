@@ -74,29 +74,35 @@ const BucketCountriesView = __webpack_require__(5)
 const Country = __webpack_require__(4)
 const MapWrapper = __webpack_require__(6)
 
+
 const countryRequest = new Request('https://restcountries.eu/rest/v2/all');
 const bucketListRequest = new Request("http://localhost:3000/api/countries");
 const allCountriesView = new AllCountriesView();
 const bucketCountriesView = new BucketCountriesView();
 const bucketList = new BucketList();
+let mainMap;
+
+
+
+
 
 const appStart = function(){
 
   countryRequest.get(getAllCountriesComplete);
 
   bucketListRequest.get(getAllBucketListCountries);
-
+  // const mapDiv = document.getElementById('main-map')
+  // const mainMap = new MapWrapper(mapDiv, [55.86515, -4.25763], 10);
   drawMap();
-
 
 }
 
 const drawMap = function(){
   const mapDiv = document.getElementById('main-map')
   const zoomLevel = 15;
-    const glasgow = [55.86515, -4.25763];
-  const mainMap = new MapWrapper(mapDiv, glasgow, zoomLevel);
-  };
+  const glasgow = [55.86515, -4.25763];
+  mainMap = new MapWrapper(mapDiv, glasgow, zoomLevel);
+};
 
 
 const getAllCountriesComplete = function(allCountries){
@@ -116,18 +122,26 @@ const getAllCountriesComplete = function(allCountries){
 const createRequestComplete = function(country){
   bucketCountriesView.showSelectedCountry(country);
   const deleteCountryButton = document.querySelector("#delete-country-button")
-    allCountriesView.makebuttonVisible(deleteCountryButton);
-    deleteCountryButton.addEventListener("click", handleRemoveCountry)
+  allCountriesView.makebuttonVisible(deleteCountryButton);
+  deleteCountryButton.addEventListener("click", handleRemoveCountry)
 }
 
 const handleAddCountry = function() {
-  const option = document.querySelector("#countries-list")
-  const newCountryName = option.value;
-
-  const countryToAdd = new Country(newCountryName)
+  const select = document.querySelector("#countries-list")
+  const newCountryName = select[select.selectedIndex].textContent;
+  const newCountryLatLng = select[select.selectedIndex].value.split(',') ;
+  console.log(select[select.selectedIndex]);
+  console.log(newCountryLatLng);
+  const hash =
+  {
+    lat: newCountryLatLng[0],
+    lng: newCountryLatLng[1]
+  }
+  const countryToAdd = new Country(newCountryName, hash)
   bucketList.add(countryToAdd)
   bucketListRequest.post(countryToAdd, createRequestComplete);
-
+  console.log('in handleAddCountry', mainMap);
+  mainMap.addMarker(hash);
 }
 
 const handleRemoveCountry = function() {
@@ -150,7 +164,7 @@ const getAllBucketListCountries = function(bucketList) {
   })
 
   if(bucketList.length > 0){
-  const deleteCountryButton = document.querySelector("#delete-country-button")
+    const deleteCountryButton = document.querySelector("#delete-country-button")
     allCountriesView.makebuttonVisible(deleteCountryButton);
     deleteCountryButton.addEventListener("click", handleRemoveCountry)
   }
@@ -227,7 +241,7 @@ allCountriesView.prototype.addCountry = function (country) {
     const select = document.querySelector("#countries-list");
     const option = document.createElement("option");
     option.textContent = country.name;
-    option.value = country.name;
+    option.value = country.latlng;
     select.appendChild(option);
 };
 
@@ -269,8 +283,9 @@ module.exports = BucketList;
 /* 4 */
 /***/ (function(module, exports) {
 
-const Country = function(name){
+const Country = function(name, latlng){
   this.name = name;
+  this.latlng = latlng;
 }
 
 module.exports = Country;
@@ -317,6 +332,7 @@ const MapWrapper = function(element, coords, zoom){
   this.map = L.map(element).addLayer(osmLayer).setView(coords, zoom);
   this.map.on('click', function(event){
     this.addMarker(event.latlng);
+    console.log(event.latlng);
 
   }.bind(this))
 
