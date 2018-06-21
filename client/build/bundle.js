@@ -68,8 +68,8 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 const Request = __webpack_require__(1);
-const BucketList = __webpack_require__(2)
-const AllCountriesView = __webpack_require__(3)
+const BucketList = __webpack_require__(3)
+const AllCountriesView = __webpack_require__(2)
 const BucketCountriesView = __webpack_require__(5)
 const Country = __webpack_require__(4)
 
@@ -82,6 +82,7 @@ const bucketList = new BucketList();
 const appStart = function(){
 
   countryRequest.get(getAllCountriesComplete);
+  bucketListRequest.get(getAllBucketListCountries);
 
 }
 
@@ -109,6 +110,15 @@ const handleAddCountry = function() {
   bucketList.add(countryToAdd)
   bucketListRequest.post(countryToAdd, createRequestComplete);
   console.log(bucketList);
+
+}
+
+
+const getAllBucketListCountries = function(bucketList) {
+  console.log(bucketList);
+  bucketList.forEach(function(country) {
+    bucketCountriesView.showSelectedCountry(country);
+  })
 }
 
 
@@ -162,25 +172,6 @@ module.exports = Request;
 /* 2 */
 /***/ (function(module, exports) {
 
-const BucketList = function(){
-  this.bucketlist = [];
-}
-
-BucketList.prototype.add = function (selectedCountry) {
-  this.bucketlist.push(selectedCountry);
-  
-};
-
-
-
-
-module.exports = BucketList;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
 var allCountriesView = function(){
 
 }
@@ -199,6 +190,25 @@ allCountriesView.prototype.makebuttonVisible = function (button) {
 };
 
 module.exports = allCountriesView
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+const BucketList = function(){
+  this.bucketlist = [];
+}
+
+BucketList.prototype.add = function (selectedCountry) {
+  this.bucketlist.push(selectedCountry);
+  
+};
+
+
+
+
+module.exports = BucketList;
 
 
 /***/ }),
@@ -231,6 +241,10 @@ BucketCountriesView.prototype.makebuttonVisible = function (button) {
   button.hidden = false;
 
 };
+
+
+
+
 
 module.exports = BucketCountriesView
 

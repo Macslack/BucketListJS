@@ -13,6 +13,7 @@ const bucketList = new BucketList();
 const appStart = function(){
 
   countryRequest.get(getAllCountriesComplete);
+  bucketListRequest.get(getAllBucketListCountries);
 
 }
 
@@ -40,6 +41,15 @@ const handleAddCountry = function() {
   bucketList.add(countryToAdd)
   bucketListRequest.post(countryToAdd, createRequestComplete);
   console.log(bucketList);
+
+}
+
+
+const getAllBucketListCountries = function(bucketList) {
+  console.log(bucketList);
+  bucketList.forEach(function(country) {
+    bucketCountriesView.showSelectedCountry(country);
+  })
 }
 
 
