@@ -7,8 +7,8 @@ const countryRequest = new Request('https://restcountries.eu/rest/v2/all');
 const bucketListRequest = new Request("http://localhost:3000/api/countries");
 const allCountriesView = new AllCountriesView();
 const bucketList = new BucketList();
-const appStart = function(){
 
+const appStart = function(){
 
   countryRequest.get(getAllCountriesComplete);
 
