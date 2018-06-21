@@ -68,10 +68,11 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 const Request = __webpack_require__(1);
-const BucketList = __webpack_require__(2)
-const AllCountriesView = __webpack_require__(3)
+const BucketList = __webpack_require__(3)
+const AllCountriesView = __webpack_require__(2)
 const BucketCountriesView = __webpack_require__(5)
 const Country = __webpack_require__(4)
+const MapWrapper = __webpack_require__(6)
 
 const countryRequest = new Request('https://restcountries.eu/rest/v2/all');
 const bucketListRequest = new Request("http://localhost:3000/api/countries");
@@ -82,8 +83,17 @@ const bucketList = new BucketList();
 const appStart = function(){
 
   countryRequest.get(getAllCountriesComplete);
-
+  drawMap();
 }
+
+const drawMap = function(){
+  const mapDiv = document.getElementById('main-map')
+  console.log(mapDiv);
+  const zoomLevel = 15;
+    const glasgow = [55.86515, -4.25763];
+  const mainMap = new MapWrapper(mapDiv, glasgow, zoomLevel);
+  };
+
 
 const getAllCountriesComplete = function(allCountries){
   allCountries.forEach(function(country){
@@ -162,25 +172,6 @@ module.exports = Request;
 /* 2 */
 /***/ (function(module, exports) {
 
-const BucketList = function(){
-  this.bucketlist = [];
-}
-
-BucketList.prototype.add = function (selectedCountry) {
-  this.bucketlist.push(selectedCountry);
-  
-};
-
-
-
-
-module.exports = BucketList;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
 var allCountriesView = function(){
 
 }
@@ -199,6 +190,25 @@ allCountriesView.prototype.makebuttonVisible = function (button) {
 };
 
 module.exports = allCountriesView
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+const BucketList = function(){
+  this.bucketlist = [];
+}
+
+BucketList.prototype.add = function (selectedCountry) {
+  this.bucketlist.push(selectedCountry);
+  
+};
+
+
+
+
+module.exports = BucketList;
 
 
 /***/ }),
@@ -233,6 +243,30 @@ BucketCountriesView.prototype.makebuttonVisible = function (button) {
 };
 
 module.exports = BucketCountriesView
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+const MapWrapper = function(element, coords, zoom){
+  const osmLayer = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+  this.map = L.map(element).addLayer(osmLayer).setView(coords, zoom);
+  this.map.on('click', function(event){
+    this.addMarker(event.latlng);
+
+  }.bind(this))
+
+}
+
+
+MapWrapper.prototype.addMarker = function(coords){
+  L.marker(coords).addTo(this.map);
+
+};
+
+
+module.exports = MapWrapper;
 
 
 /***/ })
