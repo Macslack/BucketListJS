@@ -97,6 +97,11 @@ const getAllCountriesComplete = function(allCountries){
   addCountryButton.addEventListener("click", handleAddCountry);
 }
 
+const deleteCountryButton = document.querySelector("#delete-country-button")
+  allCountriesView.makebuttonVisible(deleteCountryButton);
+  deleteCountryButton.addEventListener("click", handleAddCountry)
+
+
 const createRequestComplete = function(country){
   console.log(country);
   bucketCountriesView.showSelectedCountry(country);
