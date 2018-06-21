@@ -10,15 +10,7 @@ const bucketList = new BucketList();
 const appStart = function(){
 
 
-
   countryRequest.get(getAllCountriesComplete);
-
-
-
-
-
-
-
 
 }
 
@@ -28,13 +20,13 @@ const getAllCountriesComplete = function(allCountries){
 
   });
 
-  const createRequestComplete = function(country){
-    bucketCountriesView.addCountry(country);
-  }
-  
   const addCountryButton = document.querySelector("#add-country-button")
   allCountriesView.makebuttonVisible(addCountryButton);
   addCountryButton.addEventListener("click", handleAddCountry);
+}
+
+const createRequestComplete = function(country){
+  bucketCountriesView.addCountry(country);
 }
 
 const handleAddCountry = function() {

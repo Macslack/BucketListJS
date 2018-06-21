@@ -4,6 +4,7 @@ const BucketList = function(){
 
 BucketList.prototype.add = function (selectedCountry) {
   this.bucketlist.push(selectedCountry);
+  
 };
 
 
