@@ -1,3 +1,5 @@
-const Country = function(options){
-  this.name = options.name;
+const Country = function(name){
+  this.name = name;
 }
+
+module.exports = Country;
