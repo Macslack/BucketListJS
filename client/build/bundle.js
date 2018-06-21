@@ -70,11 +70,13 @@
 const Request = __webpack_require__(1);
 const BucketList = __webpack_require__(2)
 const AllCountriesView = __webpack_require__(3)
+const BucketCountriesView = __webpack_require__(5)
 const Country = __webpack_require__(4)
 
 const countryRequest = new Request('https://restcountries.eu/rest/v2/all');
 const bucketListRequest = new Request("http://localhost:3000/api/countries");
 const allCountriesView = new AllCountriesView();
+const bucketCountriesView = new BucketCountriesView();
 const bucketList = new BucketList();
 
 const appStart = function(){
@@ -95,14 +97,14 @@ const getAllCountriesComplete = function(allCountries){
 }
 
 const createRequestComplete = function(country){
-  bucketCountriesView.addCountry(country);
+  console.log(country);
+  bucketCountriesView.showSelectedCountry(country);
 }
 
 const handleAddCountry = function() {
   const option = document.querySelector("#countries-list")
   const newCountryName = option.value;
   console.log(newCountryName);
-  // = document.querySelector("option").value;
   const countryToAdd = new Country(newCountryName)
   bucketList.add(countryToAdd)
   bucketListRequest.post(countryToAdd, createRequestComplete);
@@ -144,6 +146,7 @@ Request.prototype.post = function (result, next) {
     const request =  new XMLHttpRequest();
     request.open("POST", this.url);
     request.setRequestHeader("Content-type", "application/json")
+
     request.addEventListener("load", function(){
       if(this.status !== 201) return;
       const responseBody = JSON.parse(this.response);
@@ -207,6 +210,29 @@ const Country = function(name){
 }
 
 module.exports = Country;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+var BucketCountriesView = function(){
+
+}
+
+BucketCountriesView.prototype.showSelectedCountry = function (SelectedCountry) {
+    const bucketList = document.querySelector("#selected-countries");
+    const li = document.createElement("li");
+    li.textContent = SelectedCountry.name
+    li.appendChild(bucketList);
+};
+
+BucketCountriesView.prototype.makebuttonVisible = function (button) {
+  button.hidden = false;
+
+};
+
+module.exports = BucketCountriesView
 
 
 /***/ })

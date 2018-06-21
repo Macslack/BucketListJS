@@ -25,7 +25,8 @@ MongoClient.connect("mongodb://localhost:27017", function(err, client){
     countryCollection.save(countryToSave, function(err, result){
       if(err) next(err);
       res.status(201);
-      // res.json(result.ops[0])
+      res.json(result.ops[0])
+      res.send();
       console.log("saved to DB");
     })
   })

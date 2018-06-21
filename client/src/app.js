@@ -1,11 +1,13 @@
 const Request = require('./services/request.js');
 const BucketList = require('./models/bucketList.js')
 const AllCountriesView = require('./views/allCountriesView.js')
+const BucketCountriesView = require('./views/bucketCountriesView.js')
 const Country = require('./models/country.js')
 
 const countryRequest = new Request('https://restcountries.eu/rest/v2/all');
 const bucketListRequest = new Request("http://localhost:3000/api/countries");
 const allCountriesView = new AllCountriesView();
+const bucketCountriesView = new BucketCountriesView();
 const bucketList = new BucketList();
 
 const appStart = function(){
@@ -26,14 +28,14 @@ const getAllCountriesComplete = function(allCountries){
 }
 
 const createRequestComplete = function(country){
-  bucketCountriesView.addCountry(country);
+  console.log(country);
+  bucketCountriesView.showSelectedCountry(country);
 }
 
 const handleAddCountry = function() {
   const option = document.querySelector("#countries-list")
   const newCountryName = option.value;
   console.log(newCountryName);
-  // = document.querySelector("option").value;
   const countryToAdd = new Country(newCountryName)
   bucketList.add(countryToAdd)
   bucketListRequest.post(countryToAdd, createRequestComplete);
