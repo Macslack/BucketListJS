@@ -68,8 +68,8 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 const Request = __webpack_require__(1);
-const BucketList = __webpack_require__(3)
-const AllCountriesView = __webpack_require__(2)
+const BucketList = __webpack_require__(2)
+const AllCountriesView = __webpack_require__(3)
 const Country = __webpack_require__(4)
 
 const countryRequest = new Request('https://restcountries.eu/rest/v2/all');
@@ -137,11 +137,42 @@ Request.prototype.get = function (next) {
   request.send()
 };
 
+Request.prototype.post = function (result, next) {
+    const request =  new XMLHttpRequest();
+    request.open("POST", this.url);
+    request.setRequestHeader("Content-type", "application/json")
+    request.addEventListener("load", function(){
+      if(this.status !== 201) return;
+      const responseBody = JSON.parse(this.response);
+      next(responseBody);
+    })
+    request.send(JSON.stringify(result))
+};
+
 module.exports = Request;
 
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+const BucketList = function(){
+  this.bucketlist = [];
+}
+
+BucketList.prototype.add = function (selectedCountry) {
+  this.bucketlist.push(selectedCountry);
+  
+};
+
+
+
+
+module.exports = BucketList;
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports) {
 
 var allCountriesView = function(){
@@ -161,25 +192,6 @@ allCountriesView.prototype.makebuttonVisible = function (button) {
 };
 
 module.exports = allCountriesView
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-const BucketList = function(){
-  this.bucketlist = [];
-}
-
-BucketList.prototype.add = function (selectedCountry) {
-  this.bucketlist.push(selectedCountry);
-  
-};
-
-
-
-
-module.exports = BucketList;
 
 
 /***/ }),

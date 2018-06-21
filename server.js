@@ -10,7 +10,7 @@ server.use(parser.urlencoded({extended: true}));
 const MongoClient = require("mongodb").MongoClient;
 const ObjectID = require("mongodb").ObjectID;
 
-MOngoClient.connect("mongodb://localhost:27017", function(err, client){
+MongoClient.connect("mongodb://localhost:27017", function(err, client){
   if(err){
     console.log(err);
     return;
@@ -27,9 +27,16 @@ MOngoClient.connect("mongodb://localhost:27017", function(err, client){
       res.status(201);
       // res.json(result.ops[0])
       console.log("saved to DB");
-
     })
   })
+
+  server.get("/api/countries", function(req, res, next){
+    const countryCollection = db.collection("countries");
+    countryCollection.find().toArray(function(err, allCountries){
+    if(err) next(err); //Cool error handeling line
+    res.json(allCountries);
+    });
+  });
 
 
 });
