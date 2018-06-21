@@ -3,6 +3,7 @@ const BucketList = require('./models/bucketList.js')
 const AllCountriesView = require('./views/allCountriesView.js')
 const BucketCountriesView = require('./views/bucketCountriesView.js')
 const Country = require('./models/country.js')
+const MapWrapper = require('./views/mapWrapper.js')
 
 const countryRequest = new Request('https://restcountries.eu/rest/v2/all');
 const bucketListRequest = new Request("http://localhost:3000/api/countries");
@@ -13,9 +14,22 @@ const bucketList = new BucketList();
 const appStart = function(){
 
   countryRequest.get(getAllCountriesComplete);
+  
   bucketListRequest.get(getAllBucketListCountries);
 
+  drawMap();
+
+
 }
+
+const drawMap = function(){
+  const mapDiv = document.getElementById('main-map')
+  console.log(mapDiv);
+  const zoomLevel = 15;
+    const glasgow = [55.86515, -4.25763];
+  const mainMap = new MapWrapper(mapDiv, glasgow, zoomLevel);
+  };
+
 
 const getAllCountriesComplete = function(allCountries){
   allCountries.forEach(function(country){
