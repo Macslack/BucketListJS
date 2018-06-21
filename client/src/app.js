@@ -14,7 +14,12 @@ const bucketList = new BucketList();
 const appStart = function(){
 
   countryRequest.get(getAllCountriesComplete);
+  
+  bucketListRequest.get(getAllBucketListCountries);
+
   drawMap();
+
+
 }
 
 const drawMap = function(){
@@ -37,6 +42,11 @@ const getAllCountriesComplete = function(allCountries){
   addCountryButton.addEventListener("click", handleAddCountry);
 }
 
+const deleteCountryButton = document.querySelector("#delete-country-button")
+  allCountriesView.makebuttonVisible(deleteCountryButton);
+  deleteCountryButton.addEventListener("click", handleAddCountry)
+
+
 const createRequestComplete = function(country){
   console.log(country);
   bucketCountriesView.showSelectedCountry(country);
@@ -50,6 +60,15 @@ const handleAddCountry = function() {
   bucketList.add(countryToAdd)
   bucketListRequest.post(countryToAdd, createRequestComplete);
   console.log(bucketList);
+
+}
+
+
+const getAllBucketListCountries = function(bucketList) {
+  console.log(bucketList);
+  bucketList.forEach(function(country) {
+    bucketCountriesView.showSelectedCountry(country);
+  })
 }
 
 
