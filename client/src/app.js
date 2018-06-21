@@ -30,7 +30,10 @@ const createRequestComplete = function(country){
 }
 
 const handleAddCountry = function() {
-  const newCountryName = document.querySelector("option").value;
+  const option = document.querySelector("#countries-list")
+  const newCountryName = option.value;
+  console.log(newCountryName);
+  // = document.querySelector("option").value;
   const countryToAdd = new Country(newCountryName)
   bucketList.add(countryToAdd)
   bucketListRequest.post(countryToAdd, createRequestComplete);
