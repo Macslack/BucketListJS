@@ -24,8 +24,21 @@ const getAllCountriesComplete = function(allCountries){
 
   });
   const addCountryButton = document.querySelector("#add-country-button")
- allCountriesView.makebuttonVisible(addCountryButton);
+  allCountriesView.makebuttonVisible(addCountryButton);
+  addCountryButton.addEventListener("click", handleAddCountry);
 }
+
+const handleAddCountry = function() {
+  
+}
+
+
+
+
+
+
+
+
 
 
 window.addEventListener('load', appStart);
